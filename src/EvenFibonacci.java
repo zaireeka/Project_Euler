@@ -1,8 +1,6 @@
-import javax.xml.transform.TransformerException;
-import java.io.IOException;
+import sun.security.util.BigInt;
+
 import java.math.BigInteger;
-import java.util.List;
-import java.util.concurrent.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,42 +15,32 @@ public class EvenFibonacci {
         fibCalc();
     }
 
-    public static int fibCalc() {
-        long maxNum = 4000000000L;
-        int submitted = 0;
+    public static BigInteger fibCalc() {
+        BigInteger maxNum = new BigInteger("4000000");
+        BigInteger a = new BigInteger("1");
+        BigInteger b = new BigInteger("2");
+        BigInteger b2;
+        BigInteger sum = new BigInteger("0");
+        BigInteger testB = new BigInteger("0");
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        while(b.compareTo(maxNum)<0) {
 
-        ExecutorCompletionService completionService = new ExecutorCompletionService(executorService);
-
-        for (long i = 1; i < maxNum; i++) {
-            completionService.submit(new Callable() {
-                @Override
-                public Object call() throws Exception {
-                    long fibStart = 1;
-                    long fibnext = 2;
-                    long nextFibNum = 0;
-                    nextFibNum = fibStart + fibnext;
-
-                    return nextFibNum;
-                }
-            });
-            submitted++;
-        }
-
-        while (submitted != 0) {
-            try {
-                Future future = completionService.take();
-                Object blah = future.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (ExecutionException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            System.out.println("b..." + b);
+            if (b.mod(new BigInteger("2")).equals(BigInteger.ZERO)){
+               sum = sum.add(b);
+               System.out.println("Your sum..." + sum);
+               testB=b;
             }
+            b2 = a.add(b);
+            a = b;
+            b = b2;
 
         }
-        return 0;
+        System.out.println("last b..." + b);
+        System.out.println(sum+" "+testB);
+        return sum;
     }
 }
+
 
 
